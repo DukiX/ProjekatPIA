@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerStavka.ucitajStavke()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Formiranje paketa</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija. <br/> <br/>ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form enctype="multipart/form-data">
+                    <span style="color: red">#{kontrolerPaket.poruka}</span>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="naziv" value="Naziv paketa:"/>
+                        <p:inputText id="naziv" maxlength="45" value="#{kontrolerPaket.naziv}" required="true" label="naziv" requiredMessage="Obavezno polje"/>
+                        <p:message for="naziv"/>
+                        
+                        <p:outputLabel for="vrednost" value="Vrednost:"/>
+                        <p:inputNumber symbol=" EUR" symbolPosition="s" id="vrednost" value="#{kontrolerPaket.vrednost}" required="true" label="vrednost" requiredMessage="Obavezno polje" decimalSeparator="," thousandSeparator="."/>
+                        <p:message for="vrednost"/>
+                        
+                        <p:outputLabel for="trajanje" value="Trajanje (godina):"/>
+                        <p:inputNumber id="trajanje" value="#{kontrolerPaket.trajanje}" required="true" label="trajanje" requiredMessage="Obavezno polje"/>
+                        <p:message for="trajanje"/>
+                        
+                        <p:outputLabel for="maxbrojgodisnje" value="Maksimalan broj godisnje:"/>
+                        <p:inputNumber id="maxbrojgodisnje" value="#{kontrolerPaket.maxbrojgodisnje}" required="true" label="maxbrojgodisnje" requiredMessage="Obavezno polje"/>
+                        <p:message for="maxbrojgodisnje"/>
+                         
+                        <p:outputLabel for="stavke" value="Izaberite stavku:"/>
+                        <p:selectManyMenu id="stavke" value="#{kontrolerPaket.izabraneStavke}" rendered="#{not empty kontrolerStavka.listaStavki}" showCheckbox="true" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{kontrolerStavka.listaStavki}"/>
+                        </p:selectManyMenu>
+                        <p:outputLabel style="color: red" value="Nema nijedne stavke u sistemu!" rendered="#{empty kontrolerStavka.listaStavki}"/>
+                        <p:message for="stavke"/>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton ajax="false" value="Formiraj paket" action="#{kontrolerPaket.dodajPaket()}" />
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="admin" />
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+

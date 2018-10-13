@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerKomp.ucitajKorisnike()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Unos kompanije</title>
+            <h:outputScript library="js" name="javascript.js"/>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160" >
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija.<br/> <br/> ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    #{kontroler1.poruka}
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+                
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form enctype="multipart/form-data">
+                    <span style="color: red">#{kontrolerKomp.poruka}</span>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="naziv" value="Naziv kompanije:"/>
+                        <p:inputText id="naziv" maxlength="45" value="#{kontrolerKomp.naziv}" required="true" label="naziv" requiredMessage="Obavezno polje"/>
+                        <p:message for="naziv"/>
+
+                        <p:outputLabel for="adresa" value="Adresa:"/>
+                        <p:inputText id="adresa" maxlength="100" value="#{kontrolerKomp.adresa}" required="true" label="adresa" requiredMessage="Obavezno polje"/>
+                        <p:message for="adresa"/>
+
+                        <p:outputLabel for="grad" value="Grad:"/>
+                        <p:inputText id="grad" maxlength="45" value="#{kontrolerKomp.grad}" required="true" label="grad" requiredMessage="Obavezno polje"/>
+                        <p:message for="grad"/>
+
+                        <p:outputLabel for="postanskibroj" value="Postanski broj:"/>
+                        <p:inputNumber padControl="false" id="postanskibroj" value="#{kontrolerKomp.postanskibroj}" required="true" label="postanskibroj" requiredMessage="Obavezno polje"/>
+                        <p:message for="postanskibroj"/>
+
+                        <p:outputLabel for="zemlja" value="Zemlja:"/>
+                        <p:inputText id="zemlja" maxlength="45" value="#{kontrolerKomp.zemlja}" required="true" label="zemlja" requiredMessage="Obavezno polje"/>
+                        <p:message for="zemlja"/>
+
+                        <h:outputLabel for="ziroracun" value="Ziro racun:" />
+                        <p:inputText id="ziroracun" maxlength="100" value="#{kontrolerKomp.ziroracun}" required="true" label="ziroracun" requiredMessage="Obavezno polje"/>
+                        <p:message for="ziroracun"/>
+
+                        <h:outputLabel for="valuta" value="Valuta:" />
+                        <p:inputText id="valuta" maxlength="3" value="#{kontrolerKomp.valuta}" required="true" label="valuta" requiredMessage="Obavezno polje"/>
+                        <p:message for="valuta"/>
+                        
+                        <h:outputLabel for="pib" value="PIB:" />
+                        <p:inputText id="pib" maxlength="100" value="#{kontrolerKomp.pib}" required="true" label="pib" requiredMessage="Obavezno polje"/>
+                        <p:message for="pib"/>
+                        
+                        <h:outputLabel for="telefon" value="Telefon:" />
+                        <p:inputText id="telefon" maxlength="45" value="#{kontrolerKomp.telefon1}" required="true" label="telefon" requiredMessage="Obavezno polje"/>
+                        <p:message for="telefon"/>
+                        
+                        <h:outputLabel for="telefon2" value="Telefon(dodatni opciono):" />
+                        <p:inputText id="telefon2" maxlength="45" value="#{kontrolerKomp.telefon2}" label="telefon2" />
+                        <p:message for="telefon2"/>
+                        
+                        <h:outputLabel for="telefon3" value="Telefon(dodatni opciono):" />
+                        <p:inputText id="telefon3" maxlength="45" value="#{kontrolerKomp.telefon3}" label="telefon3" />
+                        <p:message for="telefon3"/>
+                        
+                        <h:outputLabel for="telefon4" value="Telefon(dodatni opciono):" />
+                        <p:inputText id="telefon4" maxlength="45" value="#{kontrolerKomp.telefon4}" label="telefon4" />
+                        <p:message for="telefon4"/>
+                        
+                        <h:outputLabel for="telefon5" value="Telefon(dodatni opciono):" />
+                        <p:inputText id="telefon5" maxlength="45" value="#{kontrolerKomp.telefon5}" label="telefon5" />
+                        <p:message for="telefon5"/>
+                        
+                        <h:outputLabel for="email1" value="E-mail:" />
+                        <p:inputText id="email1" maxlength="100" value="#{kontrolerKomp.email1}" required="true" label="email1" requiredMessage="Obavezno polje"/>
+                        <p:message for="email1"/>
+                        
+                        <h:outputLabel for="email2" value="E-mail(dodatni opciono):" />
+                        <p:inputText id="email2" maxlength="100" value="#{kontrolerKomp.email2}" label="emai2" />
+                        <p:message for="email2"/>
+                        
+                        <h:outputLabel for="email3" value="E-mail(dodatni opciono):" />
+                        <p:inputText id="email3" maxlength="100" value="#{kontrolerKomp.email3}" label="emai3" />
+                        <p:message for="email3"/>
+                        
+                        <h:outputLabel for="email4" value="E-mail(dodatni opciono):" />
+                        <p:inputText id="email4" maxlength="100" value="#{kontrolerKomp.email4}" label="emai4" />
+                        <p:message for="email4"/>
+                        
+                        <h:outputLabel for="email5" value="E-mail(dodatni opciono):" />
+                        <p:inputText id="email5" maxlength="100" value="#{kontrolerKomp.email5}" label="emai5" />
+                        <p:message for="email5"/>
+                        
+                        <h:outputLabel for="ime" value="Ime nadleznog:" />
+                        <p:inputText id="ime" maxlength="45" value="#{kontrolerKomp.ime}" required="true" label="ime" requiredMessage="Obavezno polje"/>
+                        <p:message for="ime"/>
+                        
+                        <h:outputLabel for="prezime" value="Prezime nadleznog:" />
+                        <p:inputText id="prezime" maxlength="45" value="#{kontrolerKomp.prezime}" required="true" label="prezime" requiredMessage="Obavezno polje"/>
+                        <p:message for="prezime"/>
+                        
+                        <h:outputLabel for="kontaktemail" value="Kontakt E-mail nadleznog:" />
+                        <p:inputText id="kontaktemail" maxlength="100" value="#{kontrolerKomp.kontaktemail}" required="true" label="kontaktemail" requiredMessage="Obavezno polje"/>
+                        <p:message for="kontaktemail"/>
+                        
+                        <h:outputLabel for="kontakttel" value="Kontakt telefon nadleznog:" />
+                        <p:inputText id="kontakttel" maxlength="45" value="#{kontrolerKomp.kontakttel}" required="true" label="kontakttel" requiredMessage="Obavezno polje"/>
+                        <p:message for="kontakttel"/>
+
+
+                        <h:outputLabel for="logo" value="Logo:" />
+                        <p:fileUpload id="logo" value="#{kontrolerKomp.logo}" mode="simple" label="slika" />
+                        <p:message for="logo"/>
+
+                        <p:outputLabel for="korisnici" value="Izaberite korisnika:"/> 
+                        <p:selectManyMenu id="korisnici" value="#{kontrolerKomp.izabraniKorisnici}" rendered="#{not empty kontrolerKomp.listaKorisnika}" showCheckbox="true" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{kontrolerKomp.listaKorisnika}"/>
+                        </p:selectManyMenu>
+                        <p:outputLabel style="color: red" value="Nema korisnika u bazi!" rendered="#{empty kontrolerKomp.listaKorisnika}"/>
+                        <p:message for="korisnici"/>
+                        
+                        <h:outputLabel for="web" value="Web adresa(opciono):" />
+                        <p:inputText id="web" maxlength="100" value="#{kontrolerKomp.webadresa}" label="web"/>
+                        <p:message for="web"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton ajax="false" value="Unos kompanije(Admin)" action="#{kontrolerKomp.unosKompanijeAd()}" />
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="admin" />
+                </h:form>
+                 <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+
+

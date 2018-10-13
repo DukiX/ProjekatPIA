@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerOglas.ucitajSveKompanije()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Unos oglasa</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija. <br/><br/> ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form enctype="multipart/form-data">
+                    <span style="color: red">#{kontrolerOglas.poruka}</span>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="naslov" value="Naslov oglasa:"/>
+                        <p:inputText id="naslov" maxlength="45" value="#{kontrolerOglas.naslov}" required="true" label="naslov" requiredMessage="Obavezno polje"/>
+                        <p:message for="naslov"/>
+
+                        <p:outputLabel for="opis" value="Opis oglasa:"/>
+                        <p:inputTextarea id="opis" maxlength="1000" value="#{kontrolerOglas.opis}" required="true" label="opis" requiredMessage="Obavezno polje"/>
+                        <p:message for="opis"/>
+
+                        <p:outputLabel for="praksa" value="Praksa:"/>
+                        <p:selectBooleanCheckbox id="praksa" value="#{kontrolerOglas.praksa}" label="praksa"/>
+                        <p:message for="praksa"/>
+
+                        <p:outputLabel for="posao" value="Posao:"/>
+                        <p:selectBooleanCheckbox id="posao" value="#{kontrolerOglas.posao}" label="posao"/>
+                        <p:message for="posao"/>
+
+                        <h:outputLabel for="oglasfajl" value="PDF ili slika(opciono):" />
+                        <p:fileUpload id="oglasfajl" value="#{kontrolerOglas.oglasFileUploaded}" mode="simple" label="oglasfajl" />
+                        <p:message for="oglasfajl"/>
+
+                        <p:outputLabel for="kompanije" value="Izaberite kompaniju:"/>
+                        <p:selectOneMenu id="kompanije" value="#{kontrolerOglas.izabranaKompanija}" rendered="#{not empty kontrolerOglas.listaKompanija}">
+                            <f:selectItems value="#{kontrolerOglas.listaKompanija}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel style="color: red" value="Nema nijedne kompanije u sistemu!" rendered="#{empty kontrolerOglas.listaKompanija}"/>
+                        <p:message for="kompanije"/>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton ajax="false" value="Unos oglasa" action="#{kontrolerOglas.unosOglasaAd()}" rendered="#{not empty kontrolerOglas.listaKompanija}"/>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="admin" />
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+

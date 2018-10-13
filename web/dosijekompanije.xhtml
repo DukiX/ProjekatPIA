@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerUgovorD.ucitajMojePakete()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Dosije kompanije</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija. <br/><br/> ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form enctype="multipart/form-data">
+                    <h3>Dosije kompanije</h3>
+                    <span style="color: red">#{kontrolerKomp.poruka}</span>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="naziv" value="Azuriranje:"/>
+                        <p:selectBooleanCheckbox value="#{kontroler1.azuriraj}" itemLabel="Azuriranje" onchange="submit()"/>
+
+                        <p:outputLabel for="naziv" value="Naziv kompanije:"/>
+                        <h:outputText id="naziv" value="#{kontrolerKomp.naziv}" />
+
+                        <p:outputLabel for="adresa" value="Adresa:"/>
+                        <h:outputText id="adresa" value="#{kontrolerKomp.adresa}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="adresa2" maxlength="100" value="#{kontrolerKomp.adresa}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="grad" value="Grad:"/>
+                        <h:outputText id="grad" value="#{kontrolerKomp.grad}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="grad2" maxlength="45" value="#{kontrolerKomp.grad}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="postanski" value="Postanski broj:"/>
+                        <h:outputText id="postanski" value="#{kontrolerKomp.postanskibroj}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputNumber padControl="false" id="postanski2" value="#{kontrolerKomp.postanskibroj}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="zemlja" value="Zemlja:"/>
+                        <h:outputText id="zemlja" value="#{kontrolerKomp.zemlja}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="zemlja2" maxlength="45" value="#{kontrolerKomp.zemlja}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="ziro" value="Ziro racun:"/>
+                        <h:outputText id="ziro" value="#{kontrolerKomp.ziroracun}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="ziro2" maxlength="100" value="#{kontrolerKomp.ziroracun}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="valuta" value="Valuta:"/>
+                        <h:outputText id="valuta" value="#{kontrolerKomp.valuta}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="valuta2" maxlength="3" value="#{kontrolerKomp.valuta}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="pib" value="PIB:"/>
+                        <h:outputText id="pib" value="#{kontrolerKomp.pib}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="pib2" maxlength="100" value="#{kontrolerKomp.pib}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="telefon1" value="Telefon:"/>
+                        <h:outputText id="telefon1" value="#{kontrolerKomp.telefon1}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText id="telefon12" maxlength="45" value="#{kontrolerKomp.telefon1}" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="telefon2" value="Telefon2:"/>
+                        <h:outputText id="telefon2" value="#{kontrolerKomp.telefon2}" rendered="#{not empty kontrolerKomp.telefon2 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="telefon22" value="Nema" rendered="#{empty kontrolerKomp.telefon2 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.telefon2}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="telefon3" value="Telefon3:"/>
+                        <h:outputText id="telefon3" value="#{kontrolerKomp.telefon3}" rendered="#{not empty kontrolerKomp.telefon3 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="telefon33" value="Nema" rendered="#{empty kontrolerKomp.telefon3 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.telefon3}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="telefon4" value="Telefon4:"/>
+                        <h:outputText id="telefon4" value="#{kontrolerKomp.telefon4}" rendered="#{not empty kontrolerKomp.telefon4 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="telefon44" value="Nema" rendered="#{empty kontrolerKomp.telefon4 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.telefon4}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="telefon5" value="Telefon5:"/>
+                        <h:outputText id="telefon5" value="#{kontrolerKomp.telefon5}" rendered="#{not empty kontrolerKomp.telefon5 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="telefon55" value="Nema" rendered="#{empty kontrolerKomp.telefon5 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.telefon5}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="email1" value="E-mail:"/>
+                        <h:outputText id="email1" value="#{kontrolerKomp.email1}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.email1}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="email2" value="E-mail2:"/>
+                        <h:outputText id="email2" value="#{kontrolerKomp.email2}" rendered="#{not empty kontrolerKomp.email2 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="email22" value="Nema" rendered="#{empty kontrolerKomp.email2 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.email2}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="email3" value="E-mail3:"/>
+                        <h:outputText id="email3" value="#{kontrolerKomp.email3}" rendered="#{not empty kontrolerKomp.email3 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="email33" value="Nema" rendered="#{empty kontrolerKomp.email3 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.email3}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="email4" value="E-mail4:"/>
+                        <h:outputText id="email4" value="#{kontrolerKomp.email4}" rendered="#{not empty kontrolerKomp.email4 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="email44" value="Nema" rendered="#{empty kontrolerKomp.email4 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.email4}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="email5" value="E-mail5:"/>
+                        <h:outputText id="email5" value="#{kontrolerKomp.email5}" rendered="#{not empty kontrolerKomp.email5 and not kontroler1.azuriraj}"/>
+                        <h:outputText id="email55" value="Nema" rendered="#{empty kontrolerKomp.email5 and not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.email5}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="ime" value="Ime predstavnika:"/>
+                        <h:outputText id="ime" value="#{kontrolerKomp.ime}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.ime}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="prezime" value="Prezime predstavnika:"/>
+                        <h:outputText id="prezime" value="#{kontrolerKomp.prezime}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.prezime}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="kontaktemail" value="Kontakt e-mail:"/>
+                        <h:outputText id="kontaktemail" value="#{kontrolerKomp.kontaktemail}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.kontaktemail}" maxlength="100" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="kontakttel" value="Kontakt telefon:"/>
+                        <h:outputText id="kontakttel" value="#{kontrolerKomp.kontakttel}" rendered="#{not kontroler1.azuriraj}"/>
+                        <p:inputText value="#{kontrolerKomp.kontakttel}" maxlength="45" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:outputLabel for="logo" value="Logo:"/>
+                        <h:outputText id="logo" value="Nema" rendered="#{not kontroler1.azuriraj and empty kontrolerKomp.logolink}"/>
+                        <h:outputText id="logo1" value="#{kontrolerKomp.logolink}" rendered="#{not kontroler1.azuriraj and not empty kontrolerKomp.logolink}"/>
+                        <p:fileUpload value="#{kontrolerKomp.logo}" mode="simple" rendered="#{kontroler1.azuriraj}"/>
+
+                        <p:commandButton ajax="false" action="#{kontrolerKomp.unesiIzmene()}" value="Unesi izmene" rendered="#{kontroler1.azuriraj}"/>
+                    </h:panelGrid>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{kontrolerUgovorD.listaNovcani}" rendered="#{not empty kontrolerUgovorD.listaNovcani}" var="novcani" rowStyleClass="#{novcani.istekao ? 'crveno' : 'plavo'}">
+                        <f:facet name="header">
+                            Novcani ugovori
+                        </f:facet>
+                        <p:column headerText="Vrednost" sortBy="#{novcani.vrednost}">
+                            <h:outputText value="#{novcani.vrednost}" />
+                        </p:column>
+
+                        <p:column headerText="Datum ugovora" sortBy="#{novcani.datum}">
+                            <h:outputText value="#{novcani.datum}" />
+                        </p:column>
+
+                        <p:column headerText="Faktura">
+                            <h:outputText value="Poslata" rendered="#{novcani.faktura eq 1}"/>
+                            <h:outputText value="Nije poslata" rendered="#{novcani.faktura eq 0}"/>
+                        </p:column>
+
+                        <p:column headerText="Uplata">
+                            <h:outputText value="Izvrsena" rendered="#{novcani.uplata eq 1}"/>
+                            <h:outputText value="Nije izvrsena" rendered="#{novcani.uplata eq 0}"/>
+                        </p:column>
+
+                        <p:column headerText="Datum uplate" sortBy="#{novcani.datumuplate}">
+                            <h:outputText value="#{novcani.datumuplate}" rendered="#{not empty novcani.datumuplate}"/>
+                            <h:outputText value="Nema" rendered="#{empty novcani.datumuplate}"/>
+                        </p:column>
+
+                        <p:column headerText="Datum isticanja paketa" sortBy="#{novcani.datumisticanjapaketa}">
+                            <h:outputText value="#{novcani.datumisticanjapaketa}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{kontrolerUgovorD.listaDonatorski}" rendered="#{not empty kontrolerUgovorD.listaDonatorski}" var="donatorski" rowStyleClass="#{donatorski.istekao ? 'crveno' : 'plavo'}">
+                        <f:facet name="header">
+                            Donatorski ugovori
+                        </f:facet>
+                        <p:column headerText="Procenjena vrednost" sortBy="#{donatorski.procvrednost}">
+                            <h:outputText value="#{donatorski.procvrednost}" />
+                        </p:column>
+
+                        <p:column headerText="Opis">
+                            <h:outputText value="#{donatorski.opis}" />
+                        </p:column>
+
+                        <p:column headerText="Kolicina">
+                            <h:outputText value="#{donatorski.kolicina}" rendered="#{not empty donatorski.kolicina}"/>
+                            <h:outputText value="Nema" rendered="#{empty donatorski.kolicina}"/>
+                        </p:column>
+
+                        <p:column headerText="Datum ugovora" sortBy="#{donatorski.datumugovora}">
+                            <h:outputText value="#{donatorski.datumugovora}" />
+                        </p:column>
+
+                        <p:column headerText="Datum isporuke" sortBy="#{donatorski.datumisporuke}">
+                            <h:outputText value="#{donatorski.datumisporuke}" />
+                        </p:column>
+
+                        <p:column headerText="Komentar" sortBy="#{donatorski.komentar}">
+                            <h:outputText value="#{donatorski.komentar}" rendered="#{not empty donatorski.komentar}"/>
+                            <h:outputText value="Nema" rendered="#{empty donatorski.komentar}"/>
+                        </p:column>
+
+                        <p:column headerText="Datum isticanja paketa" sortBy="#{donatorski.datumisticanjapaketa}">
+                            <h:outputText value="#{donatorski.datumisticanjapaketa}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="itmenadzer" rendered="#{kontroler1.itmenadzer}"/>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="admin" rendered="#{kontroler1.admin}"/>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="pretraga" rendered="#{kontroler1.clantima}"/>
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+

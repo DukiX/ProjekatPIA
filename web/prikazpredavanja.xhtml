@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerPredavanje.ucitajPredavanja}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Predavanja</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija.<br/> <br/> ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{not kontroler1.loggedIn}">
+                    <span style="color:red">#{kontroler1.poruka}</span>
+                    <h:panelGrid columns="1">
+                        <p:message for="username"/>
+                        <p:outputLabel for="username" value="Username:"/>
+                        <p:inputText id="username" value="#{kontroler1.username}" required="true" requiredMessage="Username polje obavezno" label="username"/>
+
+                        <p:message for="password"/>
+                        <h:outputLabel for="password" value="Password:" />
+                        <p:password id="password" value="#{kontroler1.password}" required="true" requiredMessage="Password polje obavezno" label="password" />
+
+                        <f:facet name="footer">
+                            <p:commandButton ajax="false" value="Login" action="#{kontroler1.login()}" />
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    #{kontroler1.poruka}
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+                <br/>
+                <h:form rendered="#{kontroler1.clantima}">
+                    <p:commandButton ajax="false" value="Moja Stranica" action="clantima"/>
+                </h:form>
+                
+                <h:form rendered="#{kontroler1.itmenadzer}">
+                    <p:commandButton ajax="false" value="Moja Stranica" action="itmenadzer"/>
+                </h:form>
+                
+                <h:form rendered="#{kontroler1.admin}">
+                    <p:commandButton ajax="false" value="Moja Stranica" action="admin"/>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form>
+                    <p:dataTable value="#{kontrolerPredavanje.listaBuducihPredavanja}" var="predavanje" sortBy="#{predavanje.datum}">
+                        <f:facet name="header">
+                            Buduca predavanja
+                        </f:facet>
+                        <p:column headerText="Naslov(srpski)" sortBy="#{predavanje.naslovsrp}">
+                            <h:outputText value="#{predavanje.naslovsrp}" />
+                        </p:column>
+
+                        <p:column headerText="Naslov(engleski)" sortBy="#{predavanje.nasloveng}">
+                            <h:outputText value="#{predavanje.nasloveng}" rendered="#{not empty predavanje.nasloveng}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.nasloveng}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Opis(srpski)">
+                            <h:outputText value="#{predavanje.opissrp}" />
+                        </p:column>
+                        
+                        <p:column headerText="Opis(engleski)">
+                            <h:outputText value="#{predavanje.opiseng}" rendered="#{not empty predavanje.opiseng}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.opiseng}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Datum" sortBy="#{predavanje.datum}">
+                            <h:outputText value="#{predavanje.datum}" />
+                        </p:column>
+                        
+                        <p:column headerText="Vreme" sortBy="#{predavanje.vreme}">
+                            <h:outputText value="#{predavanje.vreme}" />
+                        </p:column>
+                        
+                        <p:column headerText="Sala" sortBy="#{predavanje.sala}">
+                            <h:outputText value="#{predavanje.sala}" />
+                        </p:column>
+                        
+                        <p:column headerText="Ime predavaca" sortBy="#{predavanje.imepredavaca}">
+                            <h:outputText value="#{predavanje.imepredavaca}" />
+                        </p:column>
+                        
+                        <p:column headerText="Biografija predavaca">
+                            <h:outputText value="#{predavanje.biopredavaca}" rendered="#{not empty predavanje.biopredavaca}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.biopredavaca}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Fajl">
+                            <h:outputText value="Nema" rendered="#{empty predavanje.fajl}"/>
+                            <p:commandButton value="Skini fajl" rendered="#{not empty predavanje.fajl}" ajax="false" action="#{kontrolerPredavanje.ucitajStreamPredavanja()}">
+                                <p:fileDownload value="#{predavanje.streamedfile}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{kontrolerPredavanje.listaProslihPredavanja}" var="predavanje" sortBy="#{predavanje.datum}" sortOrder="descending" rows="20">
+                        <f:facet name="header">
+                            Arhiva predavanja
+                        </f:facet>
+                        <p:column headerText="Naslov(srpski)" sortBy="#{predavanje.naslovsrp}">
+                            <h:outputText value="#{predavanje.naslovsrp}" />
+                        </p:column>
+
+                        <p:column headerText="Naslov(engleski)" sortBy="#{predavanje.nasloveng}">
+                            <h:outputText value="#{predavanje.nasloveng}" rendered="#{not empty predavanje.nasloveng}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.nasloveng}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Opis(srpski)">
+                            <h:outputText value="#{predavanje.opissrp}" />
+                        </p:column>
+                        
+                        <p:column headerText="Opis(engleski)">
+                            <h:outputText value="#{predavanje.opiseng}" rendered="#{not empty predavanje.opiseng}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.opiseng}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Datum" sortBy="#{predavanje.datum}">
+                            <h:outputText value="#{predavanje.datum}" />
+                        </p:column>
+                        
+                        <p:column headerText="Vreme" sortBy="#{predavanje.vreme}">
+                            <h:outputText value="#{predavanje.vreme}" />
+                        </p:column>
+                        
+                        <p:column headerText="Sala" sortBy="#{predavanje.sala}">
+                            <h:outputText value="#{predavanje.sala}" />
+                        </p:column>
+                        
+                        <p:column headerText="Ime predavaca" sortBy="#{predavanje.imepredavaca}">
+                            <h:outputText value="#{predavanje.imepredavaca}" />
+                        </p:column>
+                        
+                        <p:column headerText="Biografija predavaca">
+                            <h:outputText value="#{predavanje.biopredavaca}" rendered="#{not empty predavanje.biopredavaca}"/>
+                            <h:outputText value="Nema" rendered="#{empty predavanje.biopredavaca}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Fajl">
+                            <h:outputText value="Nema" rendered="#{empty predavanje.fajl}"/>
+                            <p:commandButton value="Skini fajl" rendered="#{not empty predavanje.fajl}" ajax="false" action="#{kontrolerPredavanje.ucitajPredavanja()}">
+                                <p:fileDownload value="#{predavanje.streamedfile}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:commandButton ajax="false" value="Nazad" action="index"/>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+

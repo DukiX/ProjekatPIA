@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{timelinePregled.formirajTabelu()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Admin stranica</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija. <br/> <br/>ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form>
+                    Dobrodosli: #{kontroler1.username}<br/>
+                    Uloga: Admin<br/>
+                    <br/>
+                    <hr/>
+                    <br/>
+                    <!--<p:graphicImage width="200" library="slike" name="slika#{kontroler1.username}.png" rendered="#{not empty kontroler1.slikaB}"/>-->
+                    <!--<p:graphicImage width="200" value="#{kontroler1.sl()}" rendered="#{not empty kontroler1.slikaB}"/>-->
+                    <p:graphicImage width="200" value="#{kontroler1.defaultSl()}" rendered="#{empty kontroler1.slikaB}"/>
+                </h:form>
+                <h:form id="forma">
+                    <h3>Vremenski dijagram:</h3><br/>
+                    <p:timeline id="timeline" value="#{timelinePregled.model}" height="300px" selectable="true" zoomable="false" moveable="true"
+                                stackEvents="true" eventStyle="box" showCurrentTime="true" showNavigation="false"  min="#{timelinePregled.min}" max="#{timelinePregled.max}"
+                                zoomMin="#{timelinePregled.zoomMin}" zoomMax="#{timelinePregled.zoomMax}">
+                        <p:ajax event="select" listener="#{kontrolerKomp.onSelect}" process=":forma"/> 
+                    </p:timeline>
+                </h:form>
+
+                <br/>
+                <hr/>
+                <br/>
+                
+                <h:form id="formanaredne">
+                    <p:dataTable value="#{timelinePregled.listPom}" var="kompanija" sortBy="#{kompanija.datumIstekaPaketa}" rows="20" selectionMode="single" rowKey="#{kompanija.idkompanija}" selection="#{timelinePregled.selected}">
+                        <f:facet name="header">
+                            Kompanije kojima istice ugovor u narednih 6 meseci
+                        </f:facet>
+                        <p:ajax event="rowSelect" listener="#{kontrolerKomp.onSelect2(timelinePregled.selected)}" process=":formanaredne" />
+                        <p:column headerText="Naziv" sortBy="#{kompanija.naziv}">
+                            <h:outputText value="#{kompanija.naziv}" />
+                        </p:column>
+                        
+                        <p:column headerText="Adresa" sortBy="#{kompanija.adresa}">
+                            <h:outputText value="#{kompanija.adresa}" />
+                        </p:column>
+                        
+                        <p:column headerText="Grad" sortBy="#{kompanija.grad}">
+                            <h:outputText value="#{kompanija.grad}" />
+                        </p:column>
+                        
+                        <p:column headerText="Istek ugovora" sortBy="#{kompanija.datumIstekaPaketa}">
+                            <h:outputText value="#{kompanija.datumIstekaPaketa}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form id="formaistekle">
+                    <p:dataTable value="#{timelinePregled.listPomIstekli}" var="kompanija" sortBy="#{kompanija.datumIstekaPaketa}" rows="20" selectionMode="single" rowKey="#{kompanija.idkompanija}" selection="#{timelinePregled.selected2}">
+                        <f:facet name="header">
+                            Kompanije kojima je istekao ugovor u prethodnih 6 meseci
+                        </f:facet>
+                        <p:ajax event="rowSelect" listener="#{kontrolerKomp.onSelect2(timelinePregled.selected2)}" process=":formaistekle" />
+                        <p:column headerText="Naziv" sortBy="#{kompanija.naziv}">
+                            <h:outputText value="#{kompanija.naziv}" />
+                        </p:column>
+                        
+                        <p:column headerText="Adresa" sortBy="#{kompanija.adresa}">
+                            <h:outputText value="#{kompanija.adresa}" />
+                        </p:column>
+                        
+                        <p:column headerText="Grad" sortBy="#{kompanija.grad}">
+                            <h:outputText value="#{kompanija.grad}" />
+                        </p:column>
+                        
+                        <p:column headerText="Istek ugovora" sortBy="#{kompanija.datumIstekaPaketa}">
+                            <h:outputText value="#{kompanija.datumIstekaPaketa}" />
+                        </p:column>
+                        
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                    <br/>
+                    <p:commandButton ajax="false" value="Forma za pretragu" action="pretraga" />
+                    <br/>
+                    <p:commandButton value="Rad sa korisnicima" action="odobravanjeunos"/>
+                    <br/>
+                    <p:commandButton value="Unos nove kompanije u sistem" action="unoskompad"/>
+                    <br/>
+                    <p:commandButton value="Unos nove kontakt osobe ispred fakulteta za kompaniju" action="unosnovikontakt"/>
+                    <br/>
+                    <p:commandButton value="Unos novog oglasa u sistem" action="unosoglasaad"/>
+                    <br/>
+                    <p:commandButton value="Unos novog predavanja u sistem" action="unospredavanjaad"/>
+                    <br/>
+                    <p:commandButton value="Formiranje partnerskih paketa" action="formiranjepaketa"/>
+                    <br/>
+                    <p:commandButton value="Sklapanje novog novcanog ugovora" action="novcaniunos"/>
+                    <br/>
+                    <p:commandButton value="Sklapanje novog donatorskog ugovora" action="donatorskiunos"/>
+                </h:form>
+
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+

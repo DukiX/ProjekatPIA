@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:event type="preRenderView" listener="#{kontrolerClanTima.ucitavanje()}"/>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <h:outputStylesheet library="css" name="css.css"/>
+            <title>Clan tima</title>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="160">
+                <div class="container">
+                    <div class="logo"><p:graphicImage height="120" library="slike" name="etf.gif"/></div>
+                    <div class="naslov"><p class="pnaslov">Etf kompanije i partneri</p></div>
+
+                    <div class="meni">
+                        <!--<h:form>
+                            <p:menubar>
+                                <p:menuitem value="Registracija" action="registracija"/>
+                                <p:menuitem value="Promena"/>
+                            </p:menubar>
+                        </h:form>-->
+                    </div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" size="100" >
+                <div class="container">
+                    <div class="footer"><p class="pfooter">Elektroteknički fakultet, Univerzitet u Beogradu, Bulevar kralja Aleksandra 73, 11120 Beograd, Srbija. <br/><br/> ETF 2018</p></div>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="250" header="Logovanje">
+                <h:form rendered="#{kontroler1.loggedIn}">
+                    <br/>
+                    Ulogovan:
+                    #{kontroler1.ime} #{kontroler1.prezime}<br/>
+                    <br/>
+                    <p:commandButton ajax="false" value="Logout" action="#{kontroler1.logout()}" />
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <h:form>
+                    Dobrodosli: #{kontroler1.username}<br/>
+                    Uloga: Clan Tima<br/>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{kontrolerClanTima.listPom}" var="kompanija" sortBy="#{kompanija.datumPotpisivanjaPaketa}" sortOrder="descending" rows="5" rowStyleClass="#{kontroler1.moja(kompanija.idkompanija) ? 'crveno' : null}">
+                        <f:facet name="header">
+                            Kompanije sa najskorije potpisanim ugovorima
+                        </f:facet>
+                        <p:column headerText="Naziv" sortBy="#{kompanija.naziv}">
+                            <h:outputText value="#{kompanija.naziv}" />
+                        </p:column>
+
+                        <p:column headerText="Adresa" sortBy="#{kompanija.adresa}">
+                            <h:outputText value="#{kompanija.adresa}" />
+                        </p:column>
+
+                        <p:column headerText="Grad" sortBy="#{kompanija.grad}">
+                            <h:outputText value="#{kompanija.grad}" />
+                        </p:column>
+
+                        <p:column headerText="Datum potpisivanja ugovora" sortBy="#{kompanija.datumPotpisivanjaPaketa}">
+                            <h:outputText value="#{kompanija.datumPotpisivanjaPaketa}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:dataTable value="#{kontrolerClanTima.listPom2}" var="kompanija" sortBy="#{kompanija.datumIstekaPaketa}" rows="5" rowStyleClass="#{kontroler1.moja(kompanija.idkompanija) ? 'crveno' : null}">
+                        <f:facet name="header">
+                            Kompanije kojima u narednom periodu isticu ugovori
+                        </f:facet>
+                        <p:column headerText="Naziv" sortBy="#{kompanija.naziv}">
+                            <h:outputText value="#{kompanija.naziv}" />
+                        </p:column>
+
+                        <p:column headerText="Adresa" sortBy="#{kompanija.adresa}">
+                            <h:outputText value="#{kompanija.adresa}" />
+                        </p:column>
+
+                        <p:column headerText="Grad" sortBy="#{kompanija.grad}">
+                            <h:outputText value="#{kompanija.grad}" />
+                        </p:column>
+
+                        <p:column headerText="Datum isteka ugovora" sortBy="#{kompanija.datumIstekaPaketa}">
+                            <h:outputText value="#{kompanija.datumIstekaPaketa}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <br/>
+                <hr/>
+                <br/>
+                <h:form>
+                    <p:commandButton ajax="false" value="Pocetna" action="index" />
+                </h:form>
+                <h:form>
+                    <p:commandButton ajax="false" value="Forma za pretragu" action="pretraga" />
+                </h:form>
+                <h:form>
+                    <p:commandButton value="Unos nove kompanije u sistem" action="unoskomp"/>
+                </h:form>
+                <h:form>
+                    <p:commandButton value="Unos novog oglasa u sistem" action="unosoglasa"/>
+                </h:form>
+                <h:form>
+                    <p:commandButton value="Unos novog predavanja u sistem" action="unospredavanja"/>
+                </h:form>
+            </p:layoutUnit>
+
+        </p:layout>
+    </h:body>
+</html>
+
